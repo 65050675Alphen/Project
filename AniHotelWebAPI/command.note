@@ -1,0 +1,123 @@
+จุดเด่นของ Go
+
+Static Type = จะต้องมีการประกาศ type อยู่ตลอดเวลา (type-checked)
+Compilation = go เป็นภาษาที่ต้องมีการ compile ออกมา เพื่อให้ได้ performance 
+ระดับเดียวกันกับภาษาที่ต้อง compile อย่าง c, c++ (เป็นระดับ machine code ออกมาแทน) 
+มันเลยส่งผลทำให้ Go มี performance ที่ดีด้วย
+Garbage Collection = สามารถจัดการ memory กับตัวแปรที่ไม่ได้ใช้งานแล้ว 
+(เพื่อเป็นการประหยัดการใช้งาน memory และป้องกันการ memory leaks เกิดขึ้น)
+Concurrency Support = มี standard library ที่สามารถทำ concurrent programming ได้ 
+(ผ่าน goroutines และ channel) ทำให้สามารถทำคำสั่งแบบ multi thread ได้
+
+*run*
+go run main.go 
+
+*file build*
+go build main.go
+
+*run flie build*      ถ้าเป็น Windows จะออกมาเป็น exe file
+./main          
+
+
+เพื่อไม่ให้เราต้องมา run คำสั่งแก้ไขตลอดเวลา = ใช้ nodemon ในการ run go ได้
+npm install -g nodemon
+nodemon --exec go run main.go --signal SIGTERM 
+ซึ้งสำคัญมากเลยสำหรับการทำงานเพราะต้องไปปิด  PowerShell ป้องกันการรันสคริปต์ที่ไม่ได้รับการเซ็นชื่อดิจิทัล (digitally signed)
+เนื่องจากการตั้งค่า Execution Policy ของระบบ Windows เพื่อแก้ไขปัญหานี้ คุณสามารถเปลี่ยนการตั้งค่า Execution Policy ใน window powershell
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+การคืนค่า
+Set-ExecutionPolicy Restricted -Scope CurrentUser
+
+
+package uuid สำหรับเทส
+https://pkg.go.dev/github.com/google/uuid
+
+package go get บลาๆ 
+go get github.com/google/uuid
+
+go sum บอกเวอร์ชั่น go mod บอก library
+
+├── go.mod --> package.json
+├── go.sum --> checksum library version
+└── main.go --> file project
+
+Note สำหรับเรื่องของ package
+
+go ไม่มี concept class ทุกอย่างจัดการผ่าน function และ package
+ใน 1 folder สามารถมีได้เพียง package เดียวเท่านั้น 
+(หากตั้งชื่อ package ต่างกัน ใน folder เดียวกัน = จะเกิด error ออกมา)
+go มี folder ชื่อ internal ในการจัดการการมองเห็นได้ เช่น
+
+var <ชื่อตัวแปร> <ประเภทตัวแปร>;
+<ชื่อตัวแปร> := "ค่าเริ่มต้น";
+
+const คือค่าคงที่
+
+control structure
+// แบบที่ 1
+if <condition statement> {
+  // เมื่อเป็นจริงจะทำตรงนี้
+} else {
+  // เมื่อเป็นเท็จจะทำตรงนี้
+}
+
+// แบบที่ 2
+
+if <condition statement> {
+  // เมื่อเป็นจริงจะทำตรงนี้
+} else if <condition statement อันที่ 2> {
+  // เมื่อ condition statement อันบนเป็นเทจ และ condition statement อันนี้เป็นจริงจะทำตรงนี้
+} else {
+  // เมื่อไม่มี condition statement ไหนเป็นจริงเลย = จะมาทำตรงนี้
+}
+
+switch variable {
+case value1:
+  // code ทำงานเมื่อ variable == value1
+case value2:
+  // code ทำงานเมื่อ variable == value2
+default:
+  // code ทำงานเมื่อ ไม่มี variable match กับเคสไหนเลย
+}
+
+for i := 1; i < 10; i++ {
+  fmt.Printf("number: %d", i)
+}
+
+i := 1
+for {
+  fmt.Printf("number: %d\n", i)
+  i++
+  if i >= 10 {
+    break
+  }
+}
+
+
+i := 1
+for i < 10 {
+    fmt.Printf("number: %d\n", i)
+    i++
+}
+
+Struct = ตัวแปรที่ประกอบไปด้วยกลุ่มของ Variable 
+ออกมาเป็นตัวแปรเดียว (ลักษณะคล้ายๆ Object ในภาษาอื่นๆ) 
+โดยสามารถกำหนดชื่อ field และ type คู่กันไว้ได้ เช่น
+
+type Person struct {
+  Name string
+  Age  int
+}
+
+
+Array
+var myArray [3]int // An array of 3 integers
+myArray[0] = 10    // Assign values
+myArray[1] = 20
+myArray[2] = 30
+fmt.Println(myArray) // Output: [10 20 30]
+
+nil คือ null
+
+fiber import
+go get github.com/gofiber/fiber/v2

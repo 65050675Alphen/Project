@@ -1,0 +1,131 @@
+setting gorm
+go get -u gorm.io/gorm
+go get -u gorm.io/driver/postgres
+
+package main
+
+import (
+  "fmt"
+  "gorm.io/driver/postgres"
+  "gorm.io/gorm"
+)
+
+const (
+  host     = "localhost"  // or the Docker service name if running in another container
+  port     = 5432         // default PostgreSQL port
+  user     = "myuser"     // as defined in docker-compose.yml
+  password = "mypassword" // as defined in docker-compose.yml
+  dbname   = "mydatabase" // as defined in docker-compose.yml
+)
+
+func main() {
+  // Configure your PostgreSQL database details here
+	dsn := fmt.Sprintf("host=%s port=%d user=%s "+
+  "password=%s dbname=%s sslmode=disable",
+  host, port, user, password, dbname)
+  db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+  if err != nil {
+    panic("failed to connect to database")
+  }
+  // Migrate the schema
+  db.AutoMigrate(&Book{})
+  fmt.Println("Database migration completed!")
+}
+
+panic("failed to connect to database") //error exit program
+
+
+
+
+
+
+
+
+// // Employee table
+// type Employee struct {
+// 	gorm.Model
+// 	Emp_Name     string     `json:"emp_name"`
+// 	Emp_Phone    string     `json:"emp_phone"`
+// 	Email        string     `json:"email"`
+// 	Salary       float64    `json:"salary"`
+// 	Address      string     `json:"address"`
+// 	Gender       string     `json:"gender"`
+// 	JobTitle     string     `json:"job_title"`
+// 	Department   Department `gorm:"foreignKey:DepartmentID"`
+// 	DepartmentID uint       `json:"department_id"`
+// 	Schedules    []Schedule `gorm:"foreignKey:EmployeeID"`
+// }
+
+// // Department table
+// type Department struct {
+// 	gorm.Model
+// 	DeptName  string     `json:"dept_name"`
+// 	Employees []Employee `gorm:"foreignKey:DepartmentID"`
+// }
+
+// // Customer table
+// type Customer struct {
+// 	gorm.Model
+// 	CustName  	string        `json:"cust_name"`
+// 	CustPhone 	string        `json:"cust_phone"`
+// 	Address   	string        `json:"address"`
+// 	Pets      	[]Pet         `gorm:"foreignKey:CustomerID"`
+// 	Bookings  	[]BookingList `gorm:"foreignKey:CustomerID"`
+// 	Email 		string 
+// }
+
+// // Pet table
+// type Pet struct {
+// 	gorm.Model
+// 	PetName    string        `json:"pet_name"`
+// 	PetType    string        `json:"pet_type"`
+// 	PetBreed   string        `json:"pet_breed"`
+// 	CustomerID uint          `json:"customer_id"`
+// 	Bookings   []BookingList `gorm:"foreignKey:PetID"`
+// }
+
+// // Room table
+// type Room struct {
+// 	gorm.Model
+// 	RoomName     string        `json:"room_name"`
+// 	RoomType     string        `json:"room_type"`
+// 	Availability bool          `json:"availability"`
+// 	BookingLists []BookingList `gorm:"foreignKey:RoomID"`
+// }
+
+// // ServiceType table
+// type ServiceType struct {
+// 	gorm.Model
+// 	ServiceName  string        `json:"service_name"`
+// 	Cost         float64       `json:"cost"`
+// 	BookingLists []BookingList `gorm:"foreignKey:ServiceTypeID"`
+// }
+
+// // BookingList table
+// type BookingList struct {
+// 	gorm.Model
+// 	BookingDate   string  `json:"booking_date"`
+// 	Cost          float64 `json:"cost"`
+// 	QTY           int     `json:"qty"`
+// 	CustomerID    uint    `json:"customer_id"`
+// 	PetID         uint    `json:"pet_id"`
+// 	ServiceTypeID uint    `json:"service_type_id"`
+// 	RoomID        uint    `json:"room_id"`
+// 	ScheduleID    uint    `json:"schedule_id"`
+// }
+
+// // Schedule table
+// type Schedule struct {
+// 	gorm.Model
+// 	Time         string        `json:"time"`
+// 	EmployeeID   uint          `json:"employee_id"`
+// 	BookingLists []BookingList `gorm:"foreignKey:ScheduleID"`
+// }
+
+// type User struct {
+// 	gorm.Model
+// 	UserName 		string
+// 	LoginName 		string
+// 	LoginPassword	string
+// 	Customer		Customer
+// }
